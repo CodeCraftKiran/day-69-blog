@@ -26,7 +26,7 @@
     <div class="row gx-4 gx-lg-5 justify-content-center">
       <div class="col-md-10 col-lg-8 col-xl-7">
         {{ post.body|safe }}
-        <!--TODO: Only show Edit Post button if user id is 1 (admin user) -->
+        <!--Only show Edit Post button if user id is 1 (admin user) -->
         {% if is_admin.id == 1 %}
         <div class="d-flex justify-content-end mb-4">
           <a
@@ -37,7 +37,7 @@
         </div>
         {% endif %}
         <!-- Comments Area -->
-        <!-- TODO: Add a CKEditor for commenting below -->
+        <!-- Add a CKEditor for commenting below -->
         <!-- Load the CKEditor -->
         {{ ckeditor.load() }}
         <!-- Configure it with the name of the form field from CommentForm -->
@@ -45,17 +45,19 @@
         <!-- Create the wtf quick form from CommentForm -->
         {{ render_form(form, novalidate=True) }}
         <div class="comment">
-          <!-- TODO: Show all the comments on a post -->
+          <!-- Show all the comments on a post -->
           <ul class="commentList">
+            {% for comment in post.comments: %}
             <li>
               <div class="commenterImage">
-                <img src="../static/assets/img/default-profile.jpg" />
+                <img src="{{ comment.comment_author.email | gravatar }}" />
               </div>
               <div class="commentText">
-                <p>Some comment</p>
-                <span class="date sub-text">comment author name</span>
+                <p>{{ comment.text|safe }}</p>
+                <span class="date sub-text">{{ comment.comment_author.name }}</span>
               </div>
             </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
